@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinoy Media Hub 2026 | Visual Catalog</title>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <style>
+        :root {
+            --bg-deep: #0f041e;
+            --bg-card: #240b45;
+            --accent: #9d4edd;
+            --text-main: #ffffff;
+            --text-dim: #ccb0f5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+/* HEADER SECTION */
+        header {
+            background: linear-gradient(135deg, #5c1a9e, #2d0c5e);
+            padding: 3rem 5%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers the whole block */
+        }
+
+        /* FLEX CONTAINER TO PUT IMAGE BESIDE TEXT */
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px; /* Space between logo and text */
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .header-logo {
+            width: 100px; /* Adjust size as needed */
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .header-text-group {
+            text-align: left; /* Keeps title/subtitle aligned to the left of each other */
+        }
+
+        .header-text-group h1 {
+            font-size: 2.2rem;
+            margin: 0;
+        }
+
+        .header-text-group p {
+            margin: 0;
+            color: var(--text-dim);
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            margin: 20px 0;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active { background: var(--accent); }
+
+        /* GENRE FILTER */
+        .genre-filter-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .genre-chip {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1.5px solid var(--accent);
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .genre-chip:hover {
+            background: rgba(157, 78, 221, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .genre-chip.active {
+            background: var(--accent);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* GRID SYSTEM */
+        .content-section { padding: 40px 5%; display: none; }
+        .content-section.active { display: block; }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* CARD STYLE */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.3);
+        }
+
+        .poster-container {
+            width: 100%;
+            height: 400px; 
+            background-color: #1a083d;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .poster-container::before {
+            content: "Image Placeholder";
+            color: var(--accent);
+            font-size: 0.8rem;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .poster-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+
+        .details-pane { padding: 20px; flex-grow: 1; }
+        .item-title { font-size: 1.15rem; font-weight: bold; margin-bottom: 10px; display: block; color: #fff; }
+        .info-row { font-size: 0.85rem; margin-bottom: 5px; color: var(--text-dim); display: flex; }
+        .info-row b { color: var(--accent); min-width: 90px; display: inline-block; }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            animation: slideIn 0.3s ease;
+            border: 2px solid var(--accent);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: #7c3aaa;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: flex;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .modal-poster {
+            width: 300px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        .modal-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .modal-info-row {
+            font-size: 1rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        .modal-info-row strong {
+            color: var(--accent);
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .modal-synopsis {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(157, 78, 221, 0.3);
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .modal-body {
+                flex-direction: column;
+                padding: 25px;
+            }
+
+            .modal-poster {
+                width: 100%;
+                height: 400px;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
+            }
+
+            .genre-chip {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+
+            .modal-close {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+        }
+
+        footer { 
+            padding: 40px; 
+            text-align: center; 
+            color: var(--accent); 
+            font-size: 0.8rem; 
+            border-top: 1px solid #240b45; 
+            margin-top: 60px;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-names {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .footer-names a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-names a:hover {
+            color: var(--accent);
+        }
+
+        .footer-note {
+            margin-top: 15px;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <img src="favicon.png" alt="Logo" class="header-logo">
+        <div class="header-text-group">
+            <h1>Trending Filipino Media</h1>
+            <p>32 Featured Movies & Series | 2026 Visual Catalog</p>
+        </div>
+    </div>
+
+    <input type="text" id="search" class="search-bar" placeholder="Search by title, genre, or awards...">
+    
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('movies', this)">Movies (24)</button>
+        <button class="tab-btn" onclick="switchTab('series', this)">Series (10)</button>
+    </div>
+</header>
+
+<div id="movies-genres" class="genre-filter-container" style="display: flex;">
+    <button class="genre-chip active" data-genre="all" onclick="filterGenre('all', 'movies')">All</button>
+    <button class="genre-chip" data-genre="romance" onclick="filterGenre('romance', 'movies')">Romance</button>
+    <button class="genre-chip" data-genre="drama" onclick="filterGenre('drama', 'movies')">Drama</button>
+</div>
+
+</body>
+
+<!-- GENRE FILTERS FOR MOVIES -->
+<div id="movies-genres" class="genre-filter-container" style="display: flex;">
+    <button class="genre-chip active" data-genre="all" onclick="filterGenre('all', 'movies')">All</button>
+    <button class="genre-chip" data-genre="romance" onclick="filterGenre('romance', 'movies')">Romance</button>
+    <button class="genre-chip" data-genre="drama" onclick="filterGenre('drama', 'movies')">Drama</button>
+    <button class="genre-chip" data-genre="horror" onclick="filterGenre('horror', 'movies')">Horror</button>
+    <button class="genre-chip" data-genre="historical" onclick="filterGenre('historical', 'movies')">Historical</button>
+    <button class="genre-chip" data-genre="action" onclick="filterGenre('action', 'movies')">Action</button>
+    <button class="genre-chip" data-genre="fantasy" onclick="filterGenre('fantasy', 'movies')">Fantasy</button>
+    <button class="genre-chip" data-genre="comedy" onclick="filterGenre('comedy', 'movies')">Comedy</button>
+    <button class="genre-chip" data-genre="biography" onclick="filterGenre('biography', 'movies')">Biography</button>
+    <button class="genre-chip" data-genre="war" onclick="filterGenre('war', 'movies')">War</button>
+</div>
+
+<!-- GENRE FILTERS FOR SERIES -->
+<div id="series-genres" class="genre-filter-container" style="display: none;">
+    <button class="genre-chip active" data-genre="all" onclick="filterGenre('all', 'series')">All</button>
+    <button class="genre-chip" data-genre="fantasy" onclick="filterGenre('fantasy', 'series')">Fantasy</button>
+    <button class="genre-chip" data-genre="crime" onclick="filterGenre('crime', 'series')">Crime</button>
+    <button class="genre-chip" data-genre="action" onclick="filterGenre('action', 'series')">Action</button>
+    <button class="genre-chip" data-genre="drama" onclick="filterGenre('drama', 'series')">Drama</button>
+    <button class="genre-chip" data-genre="romance" onclick="filterGenre('romance', 'series')">Romance</button>
+    <button class="genre-chip" data-genre="teen" onclick="filterGenre('teen', 'series')">Teen</button>
+</div>
+
+<section id="movies" class="content-section active">
+    <div class="item-grid">
+        <div class="content-card" data-genre="romance" onclick="openModal(this)" 
+             data-title="Hello, Love, Again" 
+             data-year="2025"
+             data-director="Cathy Garcia-Sampana"
+             data-boxoffice="₱1.6B Global"
+             data-awards="Seoul International Winner"
+             data-synopsis="The sequel follows Joy and Ethan's journey as they navigate their relationship across different continents, dealing with career ambitions and personal growth."
+             data-poster="Helloloveagain.jpg">
+            <div class="poster-container"><img src="Helloloveagain.jpg" class="poster-image" alt="Hello Love Again"></div>
+            <div class="details-pane">
+                <span class="item-title">Hello, Love, Again (2025)</span>
+                <div class="info-row"><b>Genre:</b> Romance</div>
+                <div class="info-row"><b>Box Office:</b> ₱1.6B Global</div>
+                <div class="info-row"><b>Awards:</b> Seoul Int'l Winner</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="romance drama" onclick="openModal(this)"
+             data-title="Rewind"
+             data-year="2023"
+             data-director="Mae Cruz-Alviar"
+             data-boxoffice="₱800M Domestic"
+             data-awards="4 Star Awards"
+             data-synopsis="A heartwarming story about second chances, where a man gets the opportunity to relive key moments of his life and make things right with his family."
+             data-poster="rewind.jpg">
+            <div class="poster-container"><img src="rewind.jpg" class="poster-image" alt="Rewind"></div>
+            <div class="details-pane">
+                <span class="item-title">Rewind (2023)</span>
+                <div class="info-row"><b>Genre:</b> Romance-Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱800M Domestic</div>
+                <div class="info-row"><b>Awards:</b> 4 Star Awards</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="horror thriller" onclick="openModal(this)"
+             data-title="Deleter"
+             data-year="2022"
+             data-director="Mikhail Red"
+             data-boxoffice="₱80M Domestic"
+             data-awards="7 MMFF Wins"
+             data-synopsis="A content moderator's task takes a dark turn when she starts experiencing disturbing paranormal events connected to the violent videos she reviews daily."
+             data-poster="deleter.jpg">
+            <div class="poster-container"><img src="deleter.jpg" class="poster-image" alt="Deleter"></div>
+            <div class="details-pane">
+                <span class="item-title">Deleter (2022)</span>
+                <div class="info-row"><b>Genre:</b> Horror-Thriller</div>
+                <div class="info-row"><b>Box Office:</b> ₱80M Domestic</div>
+                <div class="info-row"><b>Awards:</b> 7 MMFF Wins</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="historical drama" onclick="openModal(this)"
+             data-title="GomBurZa"
+             data-year="2023"
+             data-director="Pepe Diokno"
+             data-boxoffice="₱120M Domestic"
+             data-awards="5 MMFF Wins"
+             data-synopsis="The powerful story of three Filipino priests - Gomez, Burgos, and Zamora - who became martyrs during the Spanish colonial period and sparked the Philippine revolution."
+             data-poster="gomborza.jpg">
+            <div class="poster-container"><img src="gomborza.jpg" class="poster-image" alt="GomBurZa"></div>
+            <div class="details-pane">
+                <span class="item-title">GomBurZa (2023)</span>
+                <div class="info-row"><b>Genre:</b> Historical Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱120M Domestic</div>
+                <div class="info-row"><b>Awards:</b> 5 MMFF Wins</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama mystery" onclick="openModal(this)"
+             data-title="Uninvited"
+             data-year="2024"
+             data-director="Dan Villegas"
+             data-boxoffice="₱95M Domestic"
+             data-awards="14 FAMAS Wins"
+             data-synopsis="A gripping mystery where uninvited guests arrive at a remote vacation home, revealing dark secrets that connect them all in unexpected ways."
+             data-poster="5.jpg">
+            <div class="poster-container"><img src="5.jpg" class="poster-image" alt="Uninvited"></div>
+            <div class="details-pane">
+                <span class="item-title">Uninvited (2024)</span>
+                <div class="info-row"><b>Genre:</b> Mystery-Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱95M Domestic</div>
+                <div class="info-row"><b>Awards:</b> 14 FAMAS Wins</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama" onclick="openModal(this)"
+             data-title="Family Matters"
+             data-year="2022"
+             data-director="Nuel Naval"
+             data-boxoffice="₱65M Domestic"
+             data-awards="3 FAMAS Wins"
+             data-synopsis="An intimate family drama exploring the complexities of modern Filipino families dealing with generational conflicts and reconciliation."
+             data-poster="6.jpg">
+            <div class="poster-container"><img src="6.jpg" class="poster-image" alt="Family Matters"></div>
+            <div class="details-pane">
+                <span class="item-title">Family Matters (2022)</span>
+                <div class="info-row"><b>Genre:</b> Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱65M Domestic</div>
+                <div class="info-row"><b>Awards:</b> 3 FAMAS Wins</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="historical drama" onclick="openModal(this)"
+             data-title="Maid in Malacañang"
+             data-year="2022"
+             data-director="Darryl Yap"
+             data-boxoffice="₱193M Domestic"
+             data-awards="N/A"
+             data-synopsis="A controversial historical film depicting the final 72 hours of the Marcos family in Malacañang Palace before fleeing to Hawaii in 1986."
+             data-poster="7.jpg">
+            <div class="poster-container"><img src="7.jpg" class="poster-image" alt="Maid in Malacañang"></div>
+            <div class="details-pane">
+                <span class="item-title">Maid in Malacañang (2022)</span>
+                <div class="info-row"><b>Genre:</b> Historical Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱193M Domestic</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="documentary drama" onclick="openModal(this)"
+             data-title="Alipato at Muog"
+             data-year="2024"
+             data-director="JL Burgos"
+             data-boxoffice="Limited Release"
+             data-awards="FAMAS Best Picture"
+             data-synopsis="A powerful documentary exploring the human rights violations during Martial Law through the stories of Lumad communities in Mindanao."
+             data-poster="8.jpg">
+            <div class="poster-container"><img src="8.jpg" class="poster-image" alt="Alipato at Muog"></div>
+            <div class="details-pane">
+                <span class="item-title">Alipato at Muog (2024)</span>
+                <div class="info-row"><b>Genre:</b> Documentary</div>
+                <div class="info-row"><b>Awards:</b> FAMAS Best Picture</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="fantasy drama" onclick="openModal(this)"
+             data-title="Diwata"
+             data-year="2025"
+             data-director="Francis Xavier Pasion"
+             data-boxoffice="₱150M Domestic"
+             data-awards="N/A"
+             data-synopsis="A mystical journey into Filipino mythology where a young woman discovers her connection to ancient spirits and must protect her community from dark forces."
+             data-poster="9.jpg">
+            <div class="poster-container"><img src="9.jpg" class="poster-image" alt="Diwata"></div>
+            <div class="details-pane">
+                <span class="item-title">Diwata (2025)</span>
+                <div class="info-row"><b>Genre:</b> Fantasy-Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱150M Domestic</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="romance comedy" onclick="openModal(this)"
+             data-title="Meet, Greet & Bye"
+             data-year="2025"
+             data-director="Dwein Baltazar"
+             data-boxoffice="₱215M Domestic"
+             data-awards="N/A"
+             data-synopsis="A lighthearted romantic comedy about fleeting connections in the digital age, where meet-and-greet events lead to unexpected love stories."
+             data-poster="10.jpg">
+            <div class="poster-container"><img src="10.jpg" class="poster-image" alt="Meet Greet Bye"></div>
+            <div class="details-pane">
+                <span class="item-title">Meet, Greet & Bye (2025)</span>
+                <div class="info-row"><b>Genre:</b> Rom-Com</div>
+                <div class="info-row"><b>Box Office:</b> ₱215M Domestic</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="Historical, Biography, War, Action" onclick="openModal(this)"
+             data-title="Bonifacio: Ang Unang Pangulo"
+             data-year="2014"
+             data-director="Enzo Williams"
+             data-boxoffice="₱10 million."
+             data-awards="40th Metro Manila Film Festival (2014), FAMAS Awards (2015), PMPC Star Awards for Movies (2015),"
+             data-synopsis="Following the legacy of the Katipunan, this historical epic depicts the life of Andres Bonifacio (played by Robin Padilla) navigating the revolution against Spanish colonial rule and the internal treachery of his fellow Filipinos. The story is framed through the eyes of a group of modern-day students (including Daniel Padilla) discovering his true history in a museum. "
+             data-poster="11.jpg">
+            <div class="poster-container"><img src="11.jpg" class="poster-image" alt="Bonifacio: Ang Unang Pangulo"></div>
+            <div class="details-pane">
+                <span class="item-title">Bonifacio: Ang Unang Pangulo</span>
+                <div class="info-row"><b>Director:</b> Enzo Williams</div>
+                <div class="info-row"><b>Genre:</b> Historical, Biography, War, Action</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama" onclick="openModal(this)"
+             data-title="Andrea, Paano Ba Ang Maging Ina?"
+             data-year="1990"
+             data-director="Gil Portes"
+             data-boxoffice="Classic"
+             data-awards="Multiple Awards"
+             data-synopsis="A poignant drama about teenage pregnancy and motherhood, exploring the challenges faced by young mothers in Filipino society."
+             data-poster="12.jpg">
+            <div class="poster-container"><img src="12.jpg" class="poster-image" alt="Andrea"></div>
+            <div class="details-pane">
+                <span class="item-title">Andrea, Paano Ba Ina?</span>
+                <div class="info-row"><b>Director:</b> Gil Portes</div>
+                <div class="info-row"><b>Genre:</b> Drama</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama revenge" onclick="openModal(this)"
+             data-title="Kapag Langit Ang Humatol"
+             data-year="1990"
+             data-director="Laurice Guillen"
+             data-boxoffice="Classic"
+             data-awards="Multiple Awards"
+             data-synopsis="A revenge drama that explores justice and retribution when a woman seeks vengeance against those who wronged her family."
+             data-poster="13.jpg">
+            <div class="poster-container"><img src="13.jpg" class="poster-image" alt="Kapag Langit"></div>
+            <div class="details-pane">
+                <span class="item-title">Kapag Langit Humatol</span>
+                <div class="info-row"><b>Director:</b> Laurice Guillen</div>
+                <div class="info-row"><b>Genre:</b> Revenge Drama</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="Historical, Biography, Drama-Action, War" onclick="openModal(this)"
+             data-title="Heneral Luna (General Luna)"
+             data-year="2015"
+             data-director="Jerrold Tarog."
+             data-boxoffice="₱256M (Blockbuster)"
+             data-awards="Gawad Urian Awards (2016), PMPC Star Awards for Movies (2016), Academy Awards (Oscars, 2015), Asian Film Awards (2016),  Highest Grossing Historical Film of All Time., Platinum Stallion Media Awards, Luna Awards (Film Academy of the Philippines, 2016)"
+             data-synopsis="Following the legacy of the Philippine Revolution, this historical epic depicts the life of General Antonio Luna navigating the internal politics and treachery of his own countrymen during the Philippine-American War."
+             data-poster="14.jpg">
+            <div class="poster-container"><img src="14.jpg" class="poster-image" alt="Heneral Luna (General Luna)"></div>
+            <div class="details-pane">
+                <span class="item-title">Heneral Luna (General Luna)</span>
+                <div class="info-row"><b>Director:</b> Jerrold Tarog</div>
+                <div class="info-row"><b>Genre:</b> Historical, Biography, Drama-Action, War</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama" onclick="openModal(this)"
+             data-title="Biktima"
+             data-year="1990"
+             data-director="Lino Brocka"
+             data-boxoffice="Classic"
+             data-awards="Multiple Awards"
+             data-synopsis="Another Brocka classic examining victimization and social injustice in Philippine society."
+             data-poster="15.jpg">
+            <div class="poster-container"><img src="15.jpg" class="poster-image" alt="Biktima"></div>
+            <div class="details-pane">
+                <span class="item-title">Biktima (1990)</span>
+                <div class="info-row"><b>Director:</b> Lino Brocka</div>
+                <div class="info-row"><b>Genre:</b> Drama</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama" onclick="openModal(this)"
+             data-title="Hahamakin Ang Lahat"
+             data-year="1990"
+             data-director="Lino Brocka"
+             data-boxoffice="Classic"
+             data-awards="Multiple Awards"
+             data-synopsis="A gripping drama about determination and sacrifice as characters fight for their rights and dignity."
+             data-poster="16.jpg">
+            <div class="poster-container"><img src="16.jpg" class="poster-image" alt="Hahamakin Lahat"></div>
+            <div class="details-pane">
+                <span class="item-title">Hahamakin Lahat</span>
+                <div class="info-row"><b>Director:</b> Lino Brocka</div>
+                <div class="info-row"><b>Genre:</b> Drama</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="fantasy" onclick="openModal(this)"
+             data-title="Dyesebel"
+             data-year="1990"
+             data-director="Mel Chionglo"
+             data-boxoffice="Classic"
+             data-awards="N/A"
+             data-synopsis="The beloved Filipino fantasy about a mermaid caught between two worlds, seeking acceptance and love."
+             data-poster="17.jpg">
+            <div class="poster-container"><img src="17.jpg" class="poster-image" alt="Dyesebel"></div>
+            <div class="details-pane">
+                <span class="item-title">Dyesebel</span>
+                <div class="info-row"><b>Director:</b> Mel Chionglo</div>
+                <div class="info-row"><b>Genre:</b> Fantasy</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="action" onclick="openModal(this)"
+             data-title="Ako Ang Batas"
+             data-year="1990"
+             data-director="Francis Posadas"
+             data-boxoffice="Classic"
+             data-awards="N/A"
+             data-synopsis="A biographical action film depicting the life of a controversial lawman who took justice into his own hands."
+             data-poster="18.jpg">
+            <div class="poster-container"><img src="18.jpg" class="poster-image" alt="Ako ang Batas"></div>
+            <div class="details-pane">
+                <span class="item-title">Ako ang Batas</span>
+                <div class="info-row"><b>Director:</b> Francis Posadas</div>
+                <div class="info-row"><b>Genre:</b> Bio-Action</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="romance action" onclick="openModal(this)"
+             data-title="Kahit Konting Pagtingin"
+             data-year="1990"
+             data-director="Pablo Santiago"
+             data-boxoffice="Classic"
+             data-awards="N/A"
+             data-synopsis="A unique blend of romance and action where love blooms amidst danger and conflict."
+             data-poster="19.jpg">
+            <div class="poster-container"><img src="19.jpg" class="poster-image" alt="Kahit Konting Pagtingin"></div>
+            <div class="details-pane">
+                <span class="item-title">Kahit Konting Pagtingin</span>
+                <div class="info-row"><b>Director:</b> Pablo Santiago</div>
+                <div class="info-row"><b>Genre:</b> Rom-Action</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="action crime" onclick="openModal(this)"
+             data-title="Hulihin si Boy Amores"
+             data-year="1990"
+             data-director="Jerry Tirazona"
+             data-boxoffice="Classic"
+             data-awards="N/A"
+             data-synopsis="Based on true events, this crime thriller follows the manhunt for one of Manila's most notorious criminals."
+             data-poster="20.jpg">
+            <div class="poster-container"><img src="20.jpg" class="poster-image" alt="Boy Amores"></div>
+            <div class="details-pane">
+                <span class="item-title">Hulihin si Boy Amores</span>
+                <div class="info-row"><b>Director:</b> Jerry Tirazona</div>
+                <div class="info-row"><b>Genre:</b> True Crime</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="action drama" onclick="openModal(this)"
+             data-title="The Delivery Rider"
+             data-year="2025"
+             data-director="Lester Pimentel Ong & Wang Yan Bin"
+             data-boxoffice="Netflix Release"
+             data-awards="N/A"
+             data-synopsis="A delivery rider on the autism spectrum takes on a dangerous mission to protect a child, showcasing resilience, courage, and heart."
+             data-poster="21.jpg">
+            <div class="poster-container"><img src="21.jpg" class="poster-image" alt="The Delivery Rider"></div>
+            <div class="details-pane">
+                <span class="item-title">The Delivery Rider (2025)</span>
+                <div class="info-row"><b>Genre:</b> Action-Drama</div>
+                <div class="info-row"><b>Box Office:</b> Netflix Release</div>
+                <div class="info-row"><b>Awards:</b> N/A</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama" onclick="openModal(this)"
+             data-title="Sunshine"
+             data-year="2024"
+             data-director="Antoinette Jadaone"
+             data-boxoffice="₱47M Domestic"
+             data-awards="Crystal Bear - Best Film"
+             data-synopsis="A young female athlete overcomes societal challenges and personal struggles, highlighting determination, growth, and the spirit of Filipino youth."
+             data-poster="22.jpg">
+            <div class="poster-container"><img src="22.jpg" class="poster-image" alt="Sunshine"></div>
+            <div class="details-pane">
+                <span class="item-title">Sunshine (2024)</span>
+                <div class="info-row"><b>Genre:</b> Coming-of-Age Sports Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱47M Domestic</div>
+                <div class="info-row"><b>Awards:</b> Crystal Bear - Best Film</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="Historical, Biography" onclick="openModal(this)"
+             data-title="José Rizal"
+             data-year="1998"
+             data-director="Marilou Diaz-Abaya"
+             data-boxoffice="₱80+ million"
+             data-awards="Metro Manila Film Festival (MMFF) 1998 - 17 Awards"
+             data-synopsis="The film tells the life story of Dr. José Rizal, portrayed by Cesar Montano, from his arrest in 1896 to the flashbacks of his childhood, education, and political awakening. While imprisoned by Spanish colonial authorities, Rizal reflects on his life — his studies in Europe, his peaceful reform advocacy, and the writing of his novels Noli Me Tangere and El Filibusterismo. The movie uniquely blends real events with dramatized scenes from these novels, showing how his fictional characters symbolized the abuses and corruption under Spanish rule."
+             data-poster="23.jpg">
+            <div class="poster-container"><img src="23.jpg" class="poster-image" alt="José Rizal"></div>
+            <div class="details-pane">
+                <span class="item-title">José Rizal (1998)</span>
+                <div class="info-row"><b>Genre:</b> Historical Drama</div>
+                <div class="info-row"><b>Box Office:</b> ₱80+ million</div>
+                <div class="info-row"><b>Awards:</b> Metro Manila Film Festival (MMFF) 1998 - 17 Awards</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="Comedy, Drama, Family" onclick="openModal(this)"
+             data-title="And the Breadwinner Is…"
+             data-year="2024"
+             data-director="Jun Robles Lana"
+             data-boxoffice="₱460 million worldwide"
+             data-awards="Gender Sensitivity Award - 50th Metro Manila Film Festival (MMFF) Gabi ng Parangal"
+             data-synopsis="In this heartfelt comedy drama, Vice Ganda stars as Bambi Salvador, an Overseas Filipino Worker (OFW) who sacrifices everything for her family. When she discovers her family has squandered their savings and faces crippling debt, Bambi hatches a desperate plan — including faking her own death — to secure financial help and protect the people she loves. The film explores the emotional burden of being a breadwinner, the strength of family bonds, and the resilience needed to face life's hardships with humor and heart."
+             data-poster="24.jpg">
+            <div class="poster-container"><img src="24.jpg" class="poster-image" alt="And the Breadwinner Is…"></div>
+            <div class="details-pane">
+                <span class="item-title">And the Breadwinner Is… (2024)</span>
+                <div class="info-row"><b>Genre:</b> Comedy / Drama / Family</div>
+                <div class="info-row"><b>Box Office:</b> ₱460 million worldwide</div>
+                <div class="info-row"><b>Awards:</b> Gender Sensitivity Award - 50th Metro Manila Film Festival (MMFF) Gabi ng Parangal</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="series" class="content-section">
+    <div class="item-grid">
+        <div class="content-card" data-genre="historical fantasy" onclick="openModal(this)"
+             data-title="Maria Clara at Ibarra"
+             data-year="2023"
+             data-director="Zig Dulay"
+             data-boxoffice="4.1M Netflix Hours"
+             data-awards="Best Drama Series"
+             data-synopsis="A modern student gets transported into the world of José Rizal's Noli Me Tangere, experiencing Spanish colonial Philippines firsthand."
+             data-poster="s1.jpg">
+            <div class="poster-container"><img src="s1.jpg" class="poster-image" alt="Maria Clara at Ibarra"></div>
+            <div class="details-pane">
+                <span class="item-title">Maria Clara at Ibarra</span>
+                <div class="info-row"><b>Genre:</b> Historical Fantasy</div>
+                <div class="info-row"><b>Stats:</b> 4.1M Netflix Hours</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="crime drama" onclick="openModal(this)"
+             data-title="Dirty Linen"
+             data-year="2023"
+             data-director="Onat Diaz"
+             data-boxoffice="2.8M Netflix Hours"
+             data-awards="N/A"
+             data-synopsis="A gripping crime drama about corruption, family secrets, and the dark side of the fashion industry in Manila."
+             data-poster="s2.jpg">
+            <div class="poster-container"><img src="s2.jpg" class="poster-image" alt="Dirty Linen"></div>
+            <div class="details-pane">
+                <span class="item-title">Dirty Linen</span>
+                <div class="info-row"><b>Genre:</b> Crime-Drama</div>
+                <div class="info-row"><b>Stats:</b> 2.8M Netflix Hours</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="action drama" onclick="openModal(this)"
+             data-title="FPJ's Batang Quiapo"
+             data-year="2023"
+             data-director="Malu Sevilla"
+             data-boxoffice="30% TV Rating"
+             data-awards="N/A"
+             data-synopsis="Following the FPJ legacy, this action-packed series follows a young man from Quiapo navigating crime, justice, and redemption."
+             data-poster="s3.jpg">
+            <div class="poster-container"><img src="s3.jpg" class="poster-image" alt="Batang Quiapo"></div>
+            <div class="details-pane">
+                <span class="item-title">FPJ's Batang Quiapo</span>
+                <div class="info-row"><b>Genre:</b> Action-Drama</div>
+                <div class="info-row"><b>Ratings:</b> 30% TV Average</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="teen drama" onclick="openModal(this)"
+             data-title="Senior High"
+             data-year="2023"
+             data-director="Andoy Ranay"
+             data-boxoffice="N/A"
+             data-awards="Advocacy Impact"
+             data-synopsis="A hard-hitting teen drama tackling bullying, mental health, and social issues in Philippine high schools."
+             data-poster="s4.jpg">
+            <div class="poster-container"><img src="s4.jpg" class="poster-image" alt="Senior High"></div>
+            <div class="details-pane">
+                <span class="item-title">Senior High</span>
+                <div class="info-row"><b>Genre:</b> Teen Drama</div>
+                <div class="info-row"><b>Impact:</b> Bullying Awareness</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="romance drama" onclick="openModal(this)"
+             data-title="The Rain in España"
+             data-year="2023"
+             data-director="Theodore Boborol"
+             data-boxoffice="8.1 IMDb"
+             data-awards="International Recognition"
+             data-synopsis="A beautiful LGBTQ+ romance set in Manila's España Boulevard, exploring love, identity, and acceptance."
+             data-poster="s5.jpg">
+            <div class="poster-container"><img src="s5.jpg" class="poster-image" alt="Rain in España"></div>
+            <div class="details-pane">
+                <span class="item-title">The Rain in España</span>
+                <div class="info-row"><b>Genre:</b> Romance-Drama</div>
+                <div class="info-row"><b>Rating:</b> 8.1 IMDb</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama culinary" onclick="openModal(this)"
+             data-title="Replacing Chef Chico"
+             data-year="2023"
+             data-director="Dan Villegas"
+             data-boxoffice="N/A"
+             data-awards="Canneseries Nominee"
+             data-synopsis="A culinary drama about passion, rivalry, and redemption in Manila's competitive restaurant scene."
+             data-poster="s6.jpg">
+            <div class="poster-container"><img src="s6.jpg" class="poster-image" alt="Chef Chico"></div>
+            <div class="details-pane">
+                <span class="item-title">Replacing Chef Chico</span>
+                <div class="info-row"><b>Genre:</b> Culinary Drama</div>
+                <div class="info-row"><b>Awards:</b> Canneseries Nom</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="drama revenge" onclick="openModal(this)"
+             data-title="Lavender Fields"
+             data-year="2024"
+             data-director="Dominic Zapata"
+             data-boxoffice="33.2M Global Hours"
+             data-awards="N/A"
+             data-synopsis="A revenge-driven drama where a woman infiltrates an elite family to uncover the truth behind her loved one's death."
+             data-poster="s7.jpg">
+            <div class="poster-container"><img src="s7.jpg" class="poster-image" alt="Lavender Fields"></div>
+            <div class="details-pane">
+                <span class="item-title">Lavender Fields</span>
+                <div class="info-row"><b>Genre:</b> Revenge Drama</div>
+                <div class="info-row"><b>Stats:</b> 33.2M Global Hours</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="historical action drama" onclick="openModal(this)"
+             data-title="Pulang Araw"
+             data-year="2024"
+             data-director="Dominic Zapata"
+             data-boxoffice="N/A"
+             data-awards="Historical Impact"
+             data-synopsis="An epic World War II series depicting the Japanese occupation of the Philippines and the Filipino resistance movement."
+             data-poster="s8.jpg">
+            <div class="poster-container"><img src="s8.jpg" class="poster-image" alt="Pulang Araw"></div>
+            <div class="details-pane">
+                <span class="item-title">Pulang Araw</span>
+                <div class="info-row"><b>Genre:</b> Historical Action</div>
+                <div class="info-row"><b>Impact:</b> WWII History</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="action thriller" onclick="openModal(this)"
+             data-title="Incognito"
+             data-year="2025"
+             data-director="Topel Lee"
+             data-boxoffice="70.3M Netflix Hours"
+             data-awards="N/A"
+             data-synopsis="A high-octane spy thriller following an undercover agent navigating dangerous missions while protecting their secret identity."
+             data-poster="s9.jpg">
+            <div class="poster-container"><img src="s9.jpg" class="poster-image" alt="Incognito"></div>
+            <div class="details-pane">
+                <span class="item-title">Incognito (2025)</span>
+                <div class="info-row"><b>Genre:</b> Action-Spy</div>
+                <div class="info-row"><b>Stats:</b> 70.3M Netflix Hours</div>
+            </div>
+        </div>
+
+        <div class="content-card" data-genre="fantasy romance" onclick="openModal(this)"
+             data-title="Ghosting"
+             data-year="2025"
+             data-director="Zig Dulay"
+             data-boxoffice="7.1 IMDb"
+             data-awards="N/A"
+             data-synopsis="A supernatural romance where a woman can see ghosts and falls in love with a spirit seeking closure before moving on."
+             data-poster="s10.jpg">
+            <div class="poster-container"><img src="s10.jpg" class="poster-image" alt="Ghosting"></div>
+            <div class="details-pane">
+                <span class="item-title">Ghosting (2025)</span>
+                <div class="info-row"><b>Genre:</b> Fantasy-Romance</div>
+                <div class="info-row"><b>Rating:</b> 7.1 IMDb</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModalOnBackground(event)">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal-body">
+            <img id="modal-poster" class="modal-poster" src="" alt="">
+            <div class="modal-details">
+                <h2 id="modal-title" class="modal-title"></h2>
+                <div id="modal-genre" class="modal-info-row"></div>
+                <div id="modal-year" class="modal-info-row"></div>
+                <div id="modal-director" class="modal-info-row"></div>
+                <div id="modal-boxoffice" class="modal-info-row"></div>
+                <div id="modal-awards" class="modal-info-row"></div>
+                <div id="modal-synopsis" class="modal-synopsis"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-title">Portfolio Project Team</div>
+    <div class="footer-names">
+        <a href="https://github.com/username1" target="_blank">Andrei James C. Manalo</a>
+        <a href="https://github.com/username2" target="_blank">Ken Marcus Jared L. Tadifa</a>
+        <a href="https://github.com/username3" target="_blank">Cyrus Joseph L. Cepe</a>
+        <a href="https://github.com/username4" target="_blank">Jhomar Jhef A. Jamisola</a>
+    </div>
+    <div class="footer-note">
+        &copy; 2026 Pinoy Media Catalog • Frontend Development • UI/UX Design
+    </div>
+</footer>
+
+<script>
+    let currentTab = 'movies';
+    let activeGenres = { movies: ['all'], series: ['all'] };
+
+    // TAB SWITCHING
+    function switchTab(tabId, btn) {
+        currentTab = tabId;
+        
+        // Switch content sections
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+
+        // Switch genre filters
+        document.getElementById('movies-genres').style.display = tabId === 'movies' ? 'flex' : 'none';
+        document.getElementById('series-genres').style.display = tabId === 'series' ? 'flex' : 'none';
+
+        // Apply current filters
+        applyAllFilters();
+    }
+
+    // GENRE FILTERING
+    function filterGenre(genre, tab) {
+        if (genre === 'all') {
+            activeGenres[tab] = ['all'];
+            // Reset all chips in current tab
+            const container = tab === 'movies' ? 'movies-genres' : 'series-genres';
+            document.querySelectorAll(`#${container} .genre-chip`).forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        } else {
+            // Remove 'all' if selecting specific genre
+            if (activeGenres[tab].includes('all')) {
+                activeGenres[tab] = [];
+                const container = tab === 'movies' ? 'movies-genres' : 'series-genres';
+                document.querySelector(`#${container} .genre-chip[data-genre="all"]`).classList.remove('active');
+            }
+
+            // Toggle genre
+            const index = activeGenres[tab].indexOf(genre);
+            if (index > -1) {
+                activeGenres[tab].splice(index, 1);
+                event.target.classList.remove('active');
+            } else {
+                activeGenres[tab].push(genre);
+                event.target.classList.add('active');
+            }
+
+            // If no genres selected, default to 'all'
+            if (activeGenres[tab].length === 0) {
+                activeGenres[tab] = ['all'];
+                const container = tab === 'movies' ? 'movies-genres' : 'series-genres';
+                document.querySelector(`#${container} .genre-chip[data-genre="all"]`).classList.add('active');
+            }
+        }
+
+        applyAllFilters();
+    }
+
+    // SEARCH FUNCTIONALITY
+    document.getElementById('search').addEventListener('input', function() {
+        applyAllFilters();
+    });
+
+    // COMBINED FILTER (Search + Genre)
+    function applyAllFilters() {
+        const searchText = document.getElementById('search').value.toLowerCase();
+        const cards = document.querySelectorAll(`#${currentTab} .content-card`);
+        const currentGenres = activeGenres[currentTab];
+
+        cards.forEach(card => {
+            const cardText = card.innerText.toLowerCase();
+            const cardGenre = card.dataset.genre.toLowerCase();
+
+            const matchesSearch = searchText === '' || cardText.includes(searchText);
+            const matchesGenre = currentGenres.includes('all') || 
+                                currentGenres.some(g => cardGenre.includes(g.toLowerCase()));
+
+            card.style.display = (matchesSearch && matchesGenre) ? 'flex' : 'none';
+        });
+    }
+
+    // MODAL FUNCTIONS
+    function openModal(cardElement) {
+        const modal = document.getElementById('modal-overlay');
+        
+        // Extract data from card
+        const title = cardElement.dataset.title;
+        const year = cardElement.dataset.year;
+        const director = cardElement.dataset.director;
+        const genre = cardElement.dataset.genre;
+        const boxoffice = cardElement.dataset.boxoffice;
+        const awards = cardElement.dataset.awards;
+        const synopsis = cardElement.dataset.synopsis;
+        const poster = cardElement.dataset.poster;
+
+        // Populate modal
+        document.getElementById('modal-poster').src = poster;
+        document.getElementById('modal-poster').alt = title;
+        document.getElementById('modal-title').textContent = `${title} (${year})`;
+        
+        document.getElementById('modal-genre').innerHTML = `<strong>Genre:</strong> ${genre}`;
+        document.getElementById('modal-year').innerHTML = `<strong>Year:</strong> ${year}`;
+        
+        if (director && director !== 'undefined') {
+            document.getElementById('modal-director').innerHTML = `<strong>Director:</strong> ${director}`;
+            document.getElementById('modal-director').style.display = 'block';
+        } else {
+            document.getElementById('modal-director').style.display = 'none';
+        }
+
+        if (boxoffice && boxoffice !== 'undefined') {
+            document.getElementById('modal-boxoffice').innerHTML = `<strong>Box Office:</strong> ${boxoffice}`;
+            document.getElementById('modal-boxoffice').style.display = 'block';
+        } else {
+            document.getElementById('modal-boxoffice').style.display = 'none';
+        }
+
+        if (awards && awards !== 'undefined' && awards !== 'N/A') {
+            document.getElementById('modal-awards').innerHTML = `<strong>Awards:</strong> ${awards}`;
+            document.getElementById('modal-awards').style.display = 'block';
+        } else {
+            document.getElementById('modal-awards').style.display = 'none';
+        }
+
+        if (synopsis && synopsis !== 'undefined') {
+            document.getElementById('modal-synopsis').innerHTML = `<strong>Synopsis:</strong><br>${synopsis}`;
+            document.getElementById('modal-synopsis').style.display = 'block';
+        } else {
+            document.getElementById('modal-synopsis').style.display = 'none';
+        }
+
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('modal-overlay');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnBackground(event) {
+        if (event.target.id === 'modal-overlay') {
+            closeModal();
+        }
+    }
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+</script>
+
+</body>
+</html>
